@@ -1,0 +1,139 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --brand: #1557c0;
+    --ink: #111827;
+    --slate: #64748b;
+    --line: #e5e7eb;
+    --soft: #f3f4f6;
+    --pale: #e8f0ff;
+  }
+
+  * {
+    @apply border-line;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-white text-ink antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight text-ink;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: #cfe0ff;
+    color: #111827;
+  }
+
+  :focus-visible {
+    outline: 2px solid #1557c0;
+    outline-offset: 2px;
+  }
+
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .section {
+    @apply py-14 sm:py-20;
+  }
+
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.18em] text-brand;
+  }
+
+  .card {
+    @apply rounded-2xl border border-line bg-white;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-sm font-medium text-ink;
+  }
+
+  .field-hint {
+    @apply mt-1 text-xs text-slate;
+  }
+
+  .prose-mix {
+    @apply text-[15px] leading-7 text-slate;
+  }
+
+  .prose-mix h2 {
+    @apply mt-10 mb-3 text-2xl font-semibold text-ink;
+  }
+
+  .prose-mix h3 {
+    @apply mt-6 mb-2 text-lg font-semibold text-ink;
+  }
+
+  .prose-mix p {
+    @apply mb-4;
+  }
+
+  .prose-mix ul {
+    @apply mb-4 list-disc space-y-2 pl-5;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
