@@ -1,0 +1,17 @@
+node_modules/
+.next/
+out/
+build/
+.env
+.env.local
+.env.*.local
+*.log
+npm-debug.log*
+.DS_Store
+.vercel
+coverage/
+private/uploads/*
+!private/uploads/.gitkeep
+/tmp
+prisma/*.db
+prisma/*.db-journal
