@@ -1,0 +1,649 @@
+// MIX platform database schema
+// Money is stored as integer Kenyan Shillings (no floating point arithmetic).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/* ------------------------------------------------------------------ */
+/* Identity and access                                                */
+/* ------------------------------------------------------------------ */
+
+model Role {
+  id          String         @id @default(cuid())
+  name        String         @unique
+  description String?
+  users       User[]
+  permissions RolePermission[]
+  createdAt   DateTime       @default(now())
+}
+
+model Permission {
+  id          String           @id @default(cuid())
+  key         String           @unique
+  description String?
+  roles       RolePermission[]
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String?   @unique
+  phone         String?   @unique
+  passwordHash  String?
+  image         String?
+  emailVerified DateTime?
+  isActive      Boolean   @default(true)
+  roleId        String
+  role          Role      @relation(fields: [roleId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  customerProfile     CustomerProfile?
+  staffProfile        StaffProfile?
+  carts               Cart[]
+  orders              Order[]
+  repairRequests      RepairRequest[]
+  repairsAssigned     RepairRequest[]       @relation("RepairTechnician")
+  diagnoses           RepairDiagnosis[]
+  serviceRequests     ServiceRequest[]
+  requestsAssigned    ServiceRequest[]      @relation("ServiceAssignee")
+  notifications       Notification[]
+  auditLogs           AuditLog[]
+  orderStatusChanges  OrderStatusHistory[]
+  repairStatusChanges RepairStatusHistory[]
+  serviceStatusChanges ServiceRequestStatusHistory[]
+  inventoryMovements  InventoryMovement[]
+  technicianAssignments TechnicianAssignment[]
+
+  @@index([roleId])
+  @@index([phone])
+}
+
+model CustomerProfile {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  defaultPhone  String?
+  addressLine   String?
+  city          String?
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model StaffProfile {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  position   String?
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+}
+
+/* ------------------------------------------------------------------ */
+/* Catalogue and inventory                                            */
+/* ------------------------------------------------------------------ */
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  imageUrl    String?
+  sortOrder   Int       @default(0)
+  isActive    Boolean   @default(true)
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([isActive, sortOrder])
+}
+
+model Brand {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  slug      String    @unique
+  logoUrl   String?
+  products  Product[]
+  createdAt DateTime  @default(now())
+}
+
+model Product {
+  id             String   @id @default(cuid())
+  name           String
+  slug           String   @unique
+  sku            String   @unique
+  description    String
+  categoryId     String
+  category       Category @relation(fields: [categoryId], references: [id])
+  brandId        String?
+  brand          Brand?   @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  price          Int
+  compareAtPrice Int?
+  stockQuantity  Int      @default(0)
+  lowStockAt     Int      @default(5)
+  specs          Json?
+  isFeatured     Boolean  @default(false)
+  isNewArrival   Boolean  @default(false)
+  isActive       Boolean  @default(true)
+  archivedAt     DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  images      ProductImage[]
+  variants    ProductVariant[]
+  cartItems   CartItem[]
+  orderItems  OrderItem[]
+  movements   InventoryMovement[]
+
+  @@index([categoryId, isActive])
+  @@index([isFeatured, isActive])
+  @@index([isNewArrival, isActive])
+  @@index([price])
+  @@index([name])
+}
+
+model ProductImage {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
+  alt       String?
+  sortOrder Int     @default(0)
+
+  @@index([productId])
+}
+
+model ProductVariant {
+  id            String   @id @default(cuid())
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name          String
+  sku           String   @unique
+  price         Int?
+  stockQuantity Int      @default(0)
+  attributes    Json?
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  cartItems  CartItem[]
+  orderItems OrderItem[]
+  movements  InventoryMovement[]
+
+  @@index([productId])
+}
+
+model InventoryMovement {
+  id               String          @id @default(cuid())
+  productId        String
+  product          Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variantId        String?
+  variant          ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+  userId           String?
+  user             User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
+  quantityChange   Int
+  previousQuantity Int
+  newQuantity      Int
+  reason           String
+  createdAt        DateTime        @default(now())
+
+  @@index([productId, createdAt])
+  @@index([variantId])
+}
+
+/* ------------------------------------------------------------------ */
+/* Shopping and orders                                                */
+/* ------------------------------------------------------------------ */
+
+model Cart {
+  id         String    @id @default(cuid())
+  userId     String?
+  user       User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  guestToken String?   @unique
+  items      CartItem[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+model CartItem {
+  id        String          @id @default(cuid())
+  cartId    String
+  cart      Cart            @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variantId String?
+  variant   ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+  quantity  Int             @default(1)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@unique([cartId, productId, variantId])
+  @@index([cartId])
+}
+
+enum FulfilmentMethod {
+  COLLECTION
+  DELIVERY
+}
+
+enum OrderStatus {
+  PENDING_PAYMENT
+  PAYMENT_FAILED
+  CONFIRMED
+  PROCESSING
+  READY_FOR_COLLECTION
+  OUT_FOR_DELIVERY
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  CANCELLED
+  REFUNDED
+}
+
+model Order {
+  id                String           @id @default(cuid())
+  reference         String           @unique
+  accessToken       String           @unique
+  userId            String?
+  user              User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  customerName      String
+  phone             String
+  email             String?
+  fulfilmentMethod  FulfilmentMethod
+  deliveryAddress   String?
+  deliveryNotes     String?
+  subtotal          Int
+  deliveryFee       Int              @default(0)
+  total             Int
+  status            OrderStatus      @default(PENDING_PAYMENT)
+  paymentStatus     PaymentStatus    @default(PENDING)
+  stockRestored     Boolean          @default(false)
+  adminNotes        String?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  items      OrderItem[]
+  payments   Payment[]
+  history    OrderStatusHistory[]
+  notifications Notification[]
+
+  @@index([userId, createdAt])
+  @@index([status])
+  @@index([paymentStatus])
+  @@index([createdAt])
+  @@index([phone])
+}
+
+model OrderItem {
+  id          String          @id @default(cuid())
+  orderId     String
+  order       Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId   String?
+  product     Product?        @relation(fields: [productId], references: [id], onDelete: SetNull)
+  variantId   String?
+  variant     ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+  productName String
+  variantName String?
+  sku         String
+  unitPrice   Int
+  quantity    Int
+  lineTotal   Int
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+model Payment {
+  id                String        @id @default(cuid())
+  reference         String        @unique
+  orderId           String
+  order             Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  method            String        @default("MPESA")
+  amount            Int
+  status            PaymentStatus @default(PENDING)
+  phone             String?
+  merchantRequestId String?
+  checkoutRequestId String?       @unique
+  mpesaReceipt      String?       @unique
+  resultCode        String?
+  resultDesc        String?
+  failureReason     String?
+  rawCallback       Json?
+  initiatedAt       DateTime      @default(now())
+  completedAt       DateTime?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  @@index([orderId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model OrderStatusHistory {
+  id          String      @id @default(cuid())
+  orderId     String
+  order       Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  status      OrderStatus
+  note        String?
+  changedById String?
+  changedBy   User?       @relation(fields: [changedById], references: [id], onDelete: SetNull)
+  createdAt   DateTime    @default(now())
+
+  @@index([orderId, createdAt])
+}
+
+model Address {
+  id         String   @id @default(cuid())
+  userId     String
+  label      String?
+  line1      String
+  line2      String?
+  city       String
+  phone      String
+  isDefault  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([userId])
+}
+
+/* ------------------------------------------------------------------ */
+/* MIX Care — repairs                                                 */
+/* ------------------------------------------------------------------ */
+
+enum RepairStatus {
+  SUBMITTED
+  DIAGNOSING
+  AWAITING_CUSTOMER_APPROVAL
+  APPROVED
+  IN_REPAIR
+  READY_FOR_COLLECTION
+  COMPLETED
+  CANCELLED
+}
+
+model RepairRequest {
+  id                 String       @id @default(cuid())
+  reference          String       @unique
+  userId             String?
+  user               User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  customerName       String
+  phone              String
+  email              String?
+  deviceBrand        String
+  deviceModel        String
+  deviceType         String?
+  problemDescription String
+  preferredDate      DateTime?
+  additionalInfo     String?
+  status             RepairStatus @default(SUBMITTED)
+  assignedTechnicianId String?
+  assignedTechnician User?        @relation("RepairTechnician", fields: [assignedTechnicianId], references: [id], onDelete: SetNull)
+  estimateAmount     Int?
+  diagnosis          String?
+  internalNotes      String?
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+
+  images     RepairImage[]
+  diagnoses  RepairDiagnosis[]
+  statusHistory RepairStatusHistory[]
+  assignments TechnicianAssignment[]
+
+  @@index([userId, createdAt])
+  @@index([status])
+  @@index([reference])
+  @@index([phone])
+}
+
+model RepairImage {
+  id           String        @id @default(cuid())
+  repairId     String
+  repair       RepairRequest @relation(fields: [repairId], references: [id], onDelete: Cascade)
+  storageKey   String
+  originalName String
+  mimeType     String
+  size         Int
+  createdAt    DateTime      @default(now())
+
+  @@index([repairId])
+}
+
+model RepairDiagnosis {
+  id             String        @id @default(cuid())
+  repairId       String
+  repair         RepairRequest @relation(fields: [repairId], references: [id], onDelete: Cascade)
+  technicianId   String?
+  technician     User?         @relation(fields: [technicianId], references: [id], onDelete: SetNull)
+  findings       String
+  estimateAmount Int?
+  createdAt      DateTime      @default(now())
+
+  @@index([repairId])
+}
+
+model RepairStatusHistory {
+  id          String       @id @default(cuid())
+  repairId    String
+  repair      RepairRequest @relation(fields: [repairId], references: [id], onDelete: Cascade)
+  status      RepairStatus
+  note        String?
+  changedById String?
+  changedBy   User?        @relation(fields: [changedById], references: [id], onDelete: SetNull)
+  createdAt   DateTime     @default(now())
+
+  @@index([repairId, createdAt])
+}
+
+model TechnicianAssignment {
+  id           String        @id @default(cuid())
+  repairId     String
+  repair       RepairRequest @relation(fields: [repairId], references: [id], onDelete: Cascade)
+  technicianId String
+  technician   User          @relation(fields: [technicianId], references: [id], onDelete: Cascade)
+  assignedAt   DateTime      @default(now())
+  active       Boolean       @default(true)
+
+  @@index([repairId])
+  @@index([technicianId])
+}
+
+/* ------------------------------------------------------------------ */
+/* MIX Digital — cyber and online services                            */
+/* ------------------------------------------------------------------ */
+
+enum ServiceRequestStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  AWAITING_CUSTOMER_INFORMATION
+  QUOTED
+  APPROVED
+  PROCESSING
+  READY
+  COMPLETED
+  CANCELLED
+}
+
+model DigitalService {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String
+  priceFrom   Int?
+  unit        String   @default("service")
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  requests    ServiceRequest[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive, sortOrder])
+}
+
+model ServiceRequest {
+  id             String               @id @default(cuid())
+  reference      String               @unique
+  userId         String?
+  user           User?                @relation(fields: [userId], references: [id], onDelete: SetNull)
+  customerName   String
+  phone          String
+  email          String?
+  serviceId      String
+  service        DigitalService       @relation(fields: [serviceId], references: [id])
+  instructions   String
+  pages          Int?
+  copies         Int?
+  outputFormat   String?
+  status         ServiceRequestStatus  @default(SUBMITTED)
+  quoteAmount    Int?
+  assignedToId   String?
+  assignedTo     User?                @relation("ServiceAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+  internalNotes  String?
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+
+  documents     ServiceDocument[]
+  statusHistory ServiceRequestStatusHistory[]
+
+  @@index([userId, createdAt])
+  @@index([status])
+  @@index([reference])
+  @@index([phone])
+}
+
+model ServiceDocument {
+  id           String         @id @default(cuid())
+  requestId    String
+  request      ServiceRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  storageKey   String
+  originalName String
+  mimeType     String
+  size         Int
+  createdAt    DateTime       @default(now())
+
+  @@index([requestId])
+}
+
+model ServiceRequestStatusHistory {
+  id          String               @id @default(cuid())
+  requestId   String
+  request     ServiceRequest       @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  status      ServiceRequestStatus
+  note        String?
+  changedById String?
+  changedBy   User?                @relation(fields: [changedById], references: [id], onDelete: SetNull)
+  createdAt   DateTime             @default(now())
+
+  @@index([requestId, createdAt])
+}
+
+/* ------------------------------------------------------------------ */
+/* Business configuration                                             */
+/* ------------------------------------------------------------------ */
+
+model BusinessSettings {
+  id                 String   @id @default("singleton")
+  businessName       String   @default("MIX")
+  tagline            String   @default("Technology made simpler.")
+  phone              String   @default("+254700000000")
+  whatsapp           String   @default("254700000000")
+  email              String   @default("hello@mix.co.ke")
+  address            String   @default("MIX Business Centre, Nairobi, Kenya")
+  openingHours       String   @default("Mon–Sat, 8:00 AM – 7:00 PM")
+  deliveryEnabled    Boolean  @default(true)
+  collectionEnabled  Boolean  @default(true)
+  deliveryFee        Int      @default(300)
+  deliveryCoverage   String?  @default("Nairobi CBD and surrounding areas")
+  lowStockThreshold  Int      @default(5)
+  mpesaEnabled       Boolean  @default(true)
+  maintenanceMode    Boolean  @default(false)
+  updatedAt          DateTime @updatedAt
+}
+
+model Announcement {
+  id        String    @id @default(cuid())
+  message   String
+  isActive  Boolean   @default(true)
+  startsAt  DateTime?
+  endsAt    DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([isActive])
+}
+
+model Promotion {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  imageUrl    String?
+  ctaLabel    String?
+  ctaUrl      String?
+  isActive    Boolean   @default(true)
+  startsAt    DateTime?
+  endsAt      DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orderId   String?
+  order     Order?   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  type      String
+  title     String
+  message   String
+  readAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  entity    String
+  entityId  String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([entity, entityId])
+  @@index([createdAt])
+}
