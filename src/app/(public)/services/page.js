@@ -7,7 +7,7 @@ import { buttonVariants } from "@/components/ui/button-variants";
 export const metadata = {
   title: "Services",
   description:
-    "Explore MIX services: electronics shopping, phone repairs and digital services in Nairobi.",
+    "Explore MIX services: electronics shopping, phone repairs and digital services in Kehancha, Migori County.",
 };
 
 const divisions = [
@@ -16,7 +16,7 @@ const divisions = [
     href: "/store",
     icon: ShoppingBag,
     description:
-      "Shop electronics and accessories with secure M-PESA payment. Collect at our Nairobi CBD shop, or ask us about delivery.",
+      "Shop electronics and accessories with secure M-PESA payment. Collect at our Kehancha shop, or ask us about delivery.",
     points: [
       "Smartphones, audio, chargers and power banks",
       "Cases, screen protectors and computer accessories",

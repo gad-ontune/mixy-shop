@@ -20,18 +20,18 @@ export const metadata = {
     template: "%s · MIX",
   },
   description:
-    "MIX brings your technology needs together: electronics and accessories, reliable phone repairs and convenient digital services in Nairobi, Kenya.",
+    "MIX brings your technology needs together: electronics and accessories, reliable phone repairs and convenient digital services in Kehancha, Migori County, Kenya.",
   keywords: [
     "MIX Kenya",
-    "electronics Nairobi",
+    "electronics Kehancha",
     "phone accessories Kenya",
-    "phone repair Nairobi",
+    "phone repair Kehancha",
     "printing cyber services",
   ],
   openGraph: {
     title: "MIX — Technology made simpler",
     description:
-      "Electronics, phone accessories, phone repairs and digital services in Nairobi, Kenya.",
+      "Electronics, phone accessories, phone repairs and digital services in Kehancha, Migori County, Kenya.",
     type: "website",
     locale: "en_KE",
     siteName: "MIX",

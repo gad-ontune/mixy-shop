@@ -22,7 +22,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "MIX Store — Electronics & Accessories",
   description:
-    "Shop smartphones, chargers, earphones, headphones, speakers, power banks, cases and computer accessories at MIX Store in Nairobi.",
+    "Shop smartphones, chargers, earphones, headphones, speakers, power banks, cases and computer accessories at MIX Store in Kehancha, Migori County.",
 };
 
 const productInclude = {
@@ -121,7 +121,7 @@ export default async function StorePage() {
                 </span>
                 <h2 className="mt-3 text-base font-semibold">Delivered or collected</h2>
                 <p className="mt-1 text-[13px] leading-5 text-slate">
-                  Choose shop collection or ask about delivery in {settings.deliveryCoverage?.split(",")[0] || "Nairobi"}.
+                  Choose shop collection or ask about delivery in {settings.deliveryCoverage?.split(",")[0] || "Kehancha"}.
                 </p>
               </div>
               <p className="mt-3 text-xs text-slate">
@@ -150,8 +150,8 @@ export default async function StorePage() {
         <div className="container-page grid grid-cols-2 gap-4 py-5 sm:grid-cols-4">
           {[
             [ShieldCheck, "Secure M-PESA", "Verified server-side"],
-            [Store, "Shop collection", "Nairobi CBD"],
-            [Truck, "Delivery options", settings.deliveryCoverage?.split(",")[0] || "Nairobi"],
+            [Store, "Shop collection", "Kehancha"],
+            [Truck, "Delivery options", settings.deliveryCoverage?.split(",")[0] || "Kehancha"],
             [Headphones, "Real support", "Talk to a person"],
           ].map(([Icon, title, detail]) => (
             <div key={title} className="flex items-center gap-2.5">

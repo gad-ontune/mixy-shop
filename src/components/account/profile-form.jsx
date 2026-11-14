@@ -66,7 +66,7 @@ export function ProfileForm({ user }) {
             name="city"
             defaultValue={profile.city || ""}
             autoComplete="address-level2"
-            placeholder="Nairobi"
+            placeholder="Kehancha"
           />
         </Field>
       </div>

@@ -22,7 +22,7 @@ const productInclude = {
 export const metadata = {
   title: "Search products",
   description:
-    "Search electronics, phone accessories and everyday technology available at MIX Store in Nairobi.",
+    "Search electronics, phone accessories and everyday technology available at MIX Store in Kehancha, Migori County.",
 };
 
 function text(value) {

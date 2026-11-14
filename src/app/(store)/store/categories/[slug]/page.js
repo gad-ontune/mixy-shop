@@ -27,7 +27,7 @@ export async function generateMetadata({ params }) {
   return {
     title: category.name,
     description:
-      category.description || `Shop ${category.name.toLowerCase()} at MIX Store in Nairobi.`,
+      category.description || `Shop ${category.name.toLowerCase()} at MIX Store in Kehancha, Migori County.`,
   };
 }
 

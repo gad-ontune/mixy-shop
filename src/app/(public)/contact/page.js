@@ -13,12 +13,13 @@ import {
 } from "lucide-react";
 import { getSettings } from "@/lib/settings";
 import { PageHeader } from "@/components/layout/page-header";
+import { ShopMap } from "@/components/layout/shop-map";
 import { buttonVariants } from "@/components/ui/button-variants";
 
 export const metadata = {
   title: "Contact",
   description:
-    "Contact MIX in Nairobi for product questions, phone repairs and digital services.",
+    "Contact MIX in Kehancha for product questions, phone repairs and digital services.",
 };
 
 export default async function ContactPage() {
@@ -125,10 +126,37 @@ export default async function ContactPage() {
         </div>
       </section>
 
+      <section className="border-t border-line py-12 sm:py-14">
+        <div className="container-page grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+          <div>
+            <p className="eyebrow">Find us</p>
+            <h2 className="mt-2 text-2xl font-semibold sm:text-3xl">
+              Visit the MIX shop in Kehancha.
+            </h2>
+            <p className="mt-3 text-sm leading-7 text-slate">
+              We are in Kehancha Town, Migori County. Use the map to plan your visit, or call
+              ahead if you are not sure what to bring.
+            </p>
+            <div className="mt-5 space-y-2.5 text-sm text-slate">
+              <p className="flex items-start gap-2.5">
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand" /> {settings.address}
+              </p>
+              <p className="flex items-start gap-2.5">
+                <Clock className="mt-0.5 h-4 w-4 shrink-0 text-brand" /> {settings.openingHours}
+              </p>
+              <p className="flex items-start gap-2.5">
+                <Phone className="mt-0.5 h-4 w-4 shrink-0 text-brand" /> {settings.phone}
+              </p>
+            </div>
+          </div>
+          <ShopMap address={settings.address} />
+        </div>
+      </section>
+
       <section className="border-t border-line py-14">
         <div className="container-page grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            ["Where are you located?", "We are in the Nairobi CBD. Use the address above or message us on WhatsApp for directions."],
+            ["Where are you located?", "We are in Kehancha Town, Migori County. Use the address above or message us on WhatsApp for directions."],
             ["Do you deliver?", "Delivery availability, coverage and charges are confirmed at checkout. You can also choose shop collection where offered."],
             ["Can I pay with M-PESA?", "Yes. Orders are paid through the M-PESA prompt sent to your phone. We never ask for your M-PESA PIN."],
             ["How do repairs work?", "Submit a request, we diagnose and quote, you approve, then we repair and let you know when it is ready for collection."],

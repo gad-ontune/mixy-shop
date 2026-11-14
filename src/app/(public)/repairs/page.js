@@ -21,7 +21,7 @@ import { getSessionUser } from "@/lib/authz";
 export const metadata = {
   title: "Phone Repairs",
   description:
-    "Book a phone repair at MIX in Nairobi. Submit the fault online, approve the estimate and track the repair.",
+    "Book a phone repair at MIX in Kehancha, Migori County. Submit the fault online, approve the estimate and track the repair.",
 };
 
 const steps = [
@@ -222,7 +222,7 @@ export default async function RepairsPage() {
             ["Can I send photos?", "Yes. You can upload up to four photos of the device when booking. This helps us understand visible damage."],
             ["Is the repair confirmed?", "No. The request is received first. We diagnose the device and you approve the estimate before repair work starts."],
             ["How do I follow progress?", "Use your repair reference on the tracking page, or open the repair in your MIX account if you were signed in."],
-            ["Where do I collect?", "Collect at our Nairobi CBD shop once we mark the repair as ready. Bring your repair reference."],
+            ["Where do I collect?", "Collect at our Kehancha shop once we mark the repair as ready. Bring your repair reference."],
           ].map(([question, answer]) => (
             <div key={question}>
               <h3 className="text-sm font-semibold text-ink">{question}</h3>

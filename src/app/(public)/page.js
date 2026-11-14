@@ -17,6 +17,7 @@ import { prisma } from "@/lib/prisma";
 import { getSettings } from "@/lib/settings";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { ProductCard } from "@/components/store/product-card";
+import { ShopMap } from "@/components/layout/shop-map";
 
 export const dynamic = "force-dynamic";
 
@@ -110,7 +111,7 @@ export default async function HomePage() {
             <dl className="mt-9 grid max-w-lg grid-cols-2 gap-x-6 gap-y-4 border-t border-line pt-6 sm:grid-cols-3">
               {[
                 ["M-PESA", "Secure checkout"],
-                ["Nairobi CBD", "Shop collection"],
+                ["Kehancha", "Shop collection"],
                 ["MIX Care", "Repair tracking"],
               ].map(([title, detail]) => (
                 <div key={title}>
@@ -161,7 +162,7 @@ export default async function HomePage() {
             [ShieldCheck, "Secure M-PESA", "Pay safely from your phone"],
             [ShoppingBag, "Curated products", "Selected everyday technology"],
             [Wrench, "Repair updates", "Track progress in your account"],
-            [MapPin, "Nairobi CBD", "Collect your order in store"],
+            [MapPin, "Kehancha", "Collect your order in store"],
           ].map(([Icon, title, detail]) => (
             <div key={title} className="flex items-start gap-3">
               <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-white text-brand">
@@ -330,7 +331,7 @@ export default async function HomePage() {
           <div>
             <p className="eyebrow">About MIX</p>
             <h2 className="mt-2 text-3xl font-semibold sm:text-4xl">
-              A practical technology partner in Nairobi.
+              A practical technology partner in Kehancha, Migori County.
             </h2>
           </div>
           <div>
@@ -340,7 +341,7 @@ export default async function HomePage() {
               together so you do not have to move between disconnected providers.
             </p>
             <p className="mt-4 text-[15px] leading-7 text-slate">
-              Visit us in the Nairobi CBD, call, or start online. Our team will help you find the
+              Visit us in Kehancha, call, or start online. Our team will help you find the
               right product or the right next step.
             </p>
             <Link href="/about" className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand">
@@ -393,15 +394,7 @@ export default async function HomePage() {
                   </div>
                 </div>
               </div>
-              <div className="relative min-h-[260px] overflow-hidden bg-soft">
-                <Image
-                  src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1200&q=80"
-                  alt="Headphones on display"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 45vw"
-                  className="object-cover"
-                />
-              </div>
+              <ShopMap address={settings.address} className="h-full rounded-none border-0" />
             </div>
           </div>
         </div>

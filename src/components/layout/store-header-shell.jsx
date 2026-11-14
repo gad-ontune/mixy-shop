@@ -261,7 +261,7 @@ export function StoreHeaderShell({ user, cartCount, announcement, categories }) 
               <div className="mt-6 rounded-xl border border-line p-4 text-sm">
                 <p className="font-semibold text-ink">MIX Store</p>
                 <p className="mt-1 text-xs leading-5 text-slate">
-                  Secure M-PESA payments. Collect at our Nairobi CBD shop or ask about delivery.
+                  Secure M-PESA payments. Collect at our Kehancha shop or ask about delivery.
                 </p>
                 <Link href="/contact" className="mt-2 inline-block text-xs font-semibold text-brand">
                   Contact support

@@ -127,8 +127,8 @@ async function main() {
       customerProfile: {
         create: {
           defaultPhone: "254712345678",
-          addressLine: "Kilimani, Argwings Kodhek Road",
-          city: "Nairobi",
+          addressLine: "Kehancha Town",
+          city: "Kehancha",
         },
       },
     },
@@ -142,7 +142,7 @@ async function main() {
       passwordHash: await hash("Customer@12345"),
       roleId: roles.CUSTOMER.id,
       customerProfile: {
-        create: { defaultPhone: "254722111222", city: "Nairobi" },
+        create: { defaultPhone: "254722111222", city: "Kehancha" },
       },
     },
   });
@@ -157,12 +157,12 @@ async function main() {
       phone: "+254 712 345 678",
       whatsapp: "254712345678",
       email: "hello@mix.co.ke",
-      address: "MIX Business Centre, Kimathi Street, Nairobi CBD",
+      address: "MIX Business Centre, Kehancha Town, Migori County, Kenya",
       openingHours: "Mon–Sat, 8:00 AM – 7:00 PM",
       deliveryEnabled: true,
       collectionEnabled: true,
       deliveryFee: 300,
-      deliveryCoverage: "Nairobi CBD, Westlands, Kilimani and nearby areas",
+      deliveryCoverage: "Kehancha, Migori and nearby areas",
       lowStockThreshold: 5,
       mpesaEnabled: true,
     },
@@ -171,7 +171,7 @@ async function main() {
   await prisma.announcement.create({
     data: {
       message:
-        "Shop online, pay with M-PESA and collect at our Nairobi CBD shop — or ask about delivery.",
+        "Shop online, pay with M-PESA and collect at our Kehancha shop — or ask about delivery.",
       isActive: true,
     },
   });
@@ -250,7 +250,7 @@ async function main() {
       newArrival: true,
       image: "photo-1511707171634-5f897ff02aa9",
       description:
-        "A dependable everyday iPhone with the A15 Bionic chip, a bright 6.1-inch display and all-day battery life. Available in selected colours and storage capacities at our Nairobi CBD shop.",
+        "A dependable everyday iPhone with the A15 Bionic chip, a bright 6.1-inch display and all-day battery life. Available in selected colours and storage capacities at our Kehancha shop.",
       specs: {
         Display: "6.1-inch Super Retina XDR",
         Chip: "A15 Bionic",
@@ -689,7 +689,7 @@ async function main() {
       phone: customer.phone,
       email: customer.email,
       fulfilmentMethod: "DELIVERY",
-      deliveryAddress: "Kilimani, Argwings Kodhek Road, Nairobi",
+      deliveryAddress: "Kehancha Town, Migori County",
       deliveryNotes: "Call on arrival at the gate.",
       subtotal: iphone.price,
       deliveryFee: 300,
@@ -1098,7 +1098,7 @@ async function main() {
         orderId: processingOrder.id,
         type: "ORDER_PROCESSING",
         title: "Your order is being prepared",
-        message: "Order MIX-ORD-DEMO02 is being prepared for collection at our Nairobi CBD shop.",
+        message: "Order MIX-ORD-DEMO02 is being prepared for collection at our Kehancha shop.",
         createdAt: daysAgo(1),
       },
     ],

@@ -183,7 +183,7 @@ export default async function ProductPage({ params }) {
           <div className="mt-6 grid gap-2 sm:grid-cols-3">
             {[
               [ShieldCheck, "Secure M-PESA", "Verified on our server"],
-              [Store, "Shop collection", "Nairobi CBD"],
+              [Store, "Shop collection", "Kehancha"],
               [Truck, "Delivery", settings.deliveryEnabled ? `From ${formatKES(settings.deliveryFee)}` : "Ask in store"],
             ].map(([Icon, title, detail]) => (
               <div key={title} className="flex items-start gap-2.5 rounded-lg border border-line p-3">
@@ -257,7 +257,7 @@ export default async function ProductPage({ params }) {
               <ul className="mt-3 space-y-2 text-[13px] leading-6 text-slate">
                 {[
                   "Pay securely with M-PESA at checkout.",
-                  "Collect at our Nairobi CBD shop, or ask about delivery.",
+                  "Collect at our Kehancha shop, or ask about delivery.",
                   "Keep your order reference for collection.",
                   "Ask us about warranty before buying.",
                 ].map((item) => (

@@ -185,12 +185,12 @@ export default async function CartPage() {
                 <ShieldCheck className="h-4 w-4 text-brand" /> Secure M-PESA payment
               </p>
               <p className="flex items-center gap-2">
-                <Store className="h-4 w-4 text-brand" /> Collect at our Nairobi CBD shop
+                <Store className="h-4 w-4 text-brand" /> Collect at our Kehancha shop
               </p>
               {settings.deliveryEnabled ? (
                 <p className="flex items-center gap-2">
                   <Truck className="h-4 w-4 text-brand" /> Delivery within{" "}
-                  {settings.deliveryCoverage?.split(",")[0] || "Nairobi"}
+                  {settings.deliveryCoverage?.split(",")[0] || "Kehancha"}
                 </p>
               ) : null}
             </div>

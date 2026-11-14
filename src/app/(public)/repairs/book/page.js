@@ -7,7 +7,7 @@ import { getSettings } from "@/lib/settings";
 
 export const metadata = {
   title: "Book a Phone Repair",
-  description: "Submit a phone repair request to MIX in Nairobi.",
+  description: "Submit a phone repair request to MIX in Kehancha, Migori County.",
 };
 
 const brands = [

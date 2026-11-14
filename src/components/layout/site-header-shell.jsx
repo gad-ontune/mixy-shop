@@ -56,7 +56,7 @@ export function SiteHeaderShell({ user, cartCount, phone, whatsapp, openingHours
     <header className="sticky top-0 z-40 bg-white">
       <div className="hidden border-b border-line bg-soft/80 md:block">
         <div className="container-page flex h-9 items-center justify-between text-[11px] font-medium text-slate">
-          <p>Nairobi CBD · {openingHours}</p>
+          <p>{pathname.startsWith("/account") ? openingHours : `Kehancha, Migori · ${openingHours}`}</p>
           <div className="flex items-center gap-5">
             <a href={`tel:${phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-1.5 hover:text-brand">
               <Phone className="h-3 w-3" /> {phone}

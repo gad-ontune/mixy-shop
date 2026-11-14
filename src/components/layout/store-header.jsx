@@ -19,7 +19,7 @@ export async function StoreHeader() {
 
   const message =
     announcement?.message ||
-    "Secure M-PESA checkout · Collect at our Nairobi CBD shop or ask about delivery.";
+    "Secure M-PESA checkout · Collect at our Kehancha shop or ask about delivery.";
 
   return (
     <StoreHeaderShell

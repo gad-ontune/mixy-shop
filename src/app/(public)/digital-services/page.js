@@ -25,7 +25,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Digital Services",
   description:
-    "Printing, photocopying, scanning, typing, CV preparation and online assistance at MIX in Nairobi.",
+    "Printing, photocopying, scanning, typing, CV preparation and online assistance at MIX in Kehancha, Migori County.",
 };
 
 const icons = {

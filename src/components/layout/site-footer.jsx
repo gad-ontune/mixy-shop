@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { Phone, Mail, MapPin, Clock, MessageCircle, ShieldCheck, Truck, Store } from "lucide-react";
+import { Phone, Mail, MessageCircle, ShieldCheck, Truck, Store } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
+import { FooterShopInfo } from "@/components/layout/footer-shop-info";
 import { getSettings } from "@/lib/settings";
 
 const shopLinks = [
@@ -39,7 +40,7 @@ export async function SiteFooter() {
             <Logo />
             <p className="mt-4 text-sm leading-6 text-slate">
               Electronics, phone accessories, reliable phone repairs and convenient digital
-              services — all under one roof in Nairobi.
+              services — all under one roof.
             </p>
             <div className="mt-5 space-y-2.5 text-sm text-slate">
               <a href={`tel:${settings.phone.replace(/\s/g, "")}`} className="flex items-center gap-2.5 hover:text-brand">
@@ -48,12 +49,7 @@ export async function SiteFooter() {
               <a href={`mailto:${settings.email}`} className="flex items-center gap-2.5 hover:text-brand">
                 <Mail className="h-4 w-4 text-brand" /> {settings.email}
               </a>
-              <p className="flex items-start gap-2.5">
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand" /> {settings.address}
-              </p>
-              <p className="flex items-start gap-2.5">
-                <Clock className="mt-0.5 h-4 w-4 shrink-0 text-brand" /> {settings.openingHours}
-              </p>
+              <FooterShopInfo address={settings.address} openingHours={settings.openingHours} />
             </div>
             <a
               href={`https://wa.me/${settings.whatsapp}`}
@@ -78,7 +74,7 @@ export async function SiteFooter() {
             <Store className="h-4 w-4 text-brand" /> Shop collection available
           </span>
           <span className="flex items-center gap-2">
-            <Truck className="h-4 w-4 text-brand" /> Delivery within {settings.deliveryCoverage?.split(",")[0] || "Nairobi"}
+            <Truck className="h-4 w-4 text-brand" /> Delivery within {settings.deliveryCoverage?.split(",")[0] || "Kehancha"}
           </span>
         </div>
 

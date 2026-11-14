@@ -21,7 +21,7 @@ import { PageHeader } from "@/components/layout/page-header";
 export const metadata = {
   title: "About MIX",
   description:
-    "MIX is a Nairobi technology business bringing electronics, phone repairs and digital services together under one roof.",
+    "MIX is a Kehancha technology business bringing electronics, phone repairs and digital services together under one roof.",
 };
 
 export default async function AboutPage() {
@@ -40,7 +40,7 @@ export default async function AboutPage() {
           <div className="prose-mix max-w-2xl">
             <h2>Our approach</h2>
             <p>
-              MIX is a technology and digital services business based in Nairobi, Kenya. We
+              MIX is a technology and digital services business based in Kehancha, Migori County, Kenya. We
               combine a retail store, a phone repair service and a digital services desk so that
               customers can get more done in one place.
             </p>

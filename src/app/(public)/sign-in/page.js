@@ -61,7 +61,7 @@ export default async function SignInPage({ searchParams }) {
             </ul>
           </div>
           <p className="text-xs text-white/50">
-            MIX · Technology made simpler · Nairobi, Kenya
+            MIX · Technology made simpler · Kehancha, Migori County, Kenya
           </p>
         </div>
       </div>

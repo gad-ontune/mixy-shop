@@ -136,7 +136,7 @@ export function AddToCartForm({ product }) {
 
       <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs text-slate">
         <span>Secure M-PESA payment</span>
-        <span>Collect at our Nairobi CBD shop</span>
+        <span>Collect at our Kehancha shop</span>
         <span>Ask us about delivery</span>
       </div>
     </div>

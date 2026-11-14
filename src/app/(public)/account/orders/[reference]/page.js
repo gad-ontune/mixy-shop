@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, MapPin, Store, Truck, ShieldCheck, RefreshCw } from "lucide-react";
+import { ArrowLeft, Store, Truck, ShieldCheck, RefreshCw } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/authz";
-import { getSettings } from "@/lib/settings";
 import { formatKES, formatDateTime } from "@/lib/format";
 import {
   ORDER_STATUS_LABELS,
@@ -34,7 +33,6 @@ export default async function AccountOrderDetailPage({ params }) {
 
   if (!order || order.userId !== user.id) notFound();
 
-  const settings = await getSettings();
   const paid = order.paymentStatus === "SUCCESS";
   const canRetry = ["PENDING", "FAILED", "CANCELLED"].includes(order.paymentStatus) &&
     order.status !== "CANCELLED";
@@ -172,17 +170,17 @@ export default async function AccountOrderDetailPage({ params }) {
                 <p className="font-medium text-ink">
                   {order.fulfilmentMethod === "DELIVERY"
                     ? order.deliveryAddress
-                    : settings.address}
+                    : "Collect from the MIX shop"}
                 </p>
                 {order.fulfilmentMethod === "COLLECTION" ? (
-                  <p className="mt-0.5">{settings.openingHours}</p>
+                  <p className="mt-0.5">We will let you know when your order is ready for collection.</p>
                 ) : null}
                 {order.deliveryNotes ? <p className="mt-1">{order.deliveryNotes}</p> : null}
               </div>
             </div>
             {order.fulfilmentMethod === "COLLECTION" ? (
               <p className="mt-2 flex items-center gap-1.5 text-xs text-slate">
-                <MapPin className="h-3.5 w-3.5 text-brand" /> Bring your order reference.
+                <Store className="h-3.5 w-3.5 text-brand" /> Bring your order reference.
               </p>
             ) : null}
           </div>
